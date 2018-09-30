@@ -23,6 +23,7 @@ public class HTTPSClient {
 	private static final Logger logger = LoggerFactory.getLogger(HTTPSClient.class);
 	private static List<String> targetURL = new ArrayList<String>();
 
+	
 //	static {
 //		javax.net.ssl.HttpsURLConnection
 //				.setDefaultHostnameVerifier(new javax.net.ssl.HostnameVerifier() {
