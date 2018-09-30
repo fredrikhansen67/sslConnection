@@ -21,47 +21,32 @@ import org.slf4j.LoggerFactory;
 public class HTTPSClient {
 
 	private static final Logger logger = LoggerFactory.getLogger(HTTPSClient.class);
-	private static List<String> targetURL = new ArrayList<String>();
+	private static List<String> URLdestination = new ArrayList<String>();
 
-	
-//	static {
-//		javax.net.ssl.HttpsURLConnection
-//				.setDefaultHostnameVerifier(new javax.net.ssl.HostnameVerifier() {
-//
-//					public boolean verify(String hostname,
-//							javax.net.ssl.SSLSession sslSession) {
-//						if (hostname.equals("localhost")) {
-//							return true;
-//						}
-//						return false;
-//					}
-//				});
-//	}
+
 
 	/**
-	 * 
+	 * default constructor
 	 */
 	public HTTPSClient() {
-		logger.debug("default constructor");
+		logger.debug("HTTPSClient Instance created");
 	}
 
 	
 	
 	public static void main(String[] args) {
-		targetURL.add("https://github.com/");
-		targetURL.add("https://www.skistar.com/sv/");
+		URLdestination.add("https://github.com/");
+		URLdestination.add("https://www.skistar.com/sv/");
 
-		for (String httpURL : targetURL) {
+		for (String httpURL : URLdestination) {
 			HttpsURLConnection conn = null;
 			try {
 				// Create connection
-				logger.info("Try to connect to the URL " 
-						+ httpURL
-						+ " ...");
+				logger.info("Connecting to " 	+ httpURL);
 				URL url = new URL(httpURL);
 				conn = (HttpsURLConnection) url.openConnection();
 
-				// Prepare a GET request Action
+				// Prepare the GET request 
 				conn.setRequestMethod("GET");
 				conn.setRequestProperty("User-Agent", "Freddans test");
 				conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml");
@@ -70,7 +55,7 @@ public class HTTPSClient {
 				conn.setUseCaches(false);
 				conn.setDoOutput(true);
 
-				// Create a SSL SocketFactory
+				// Create the SSL SocketFactory
 				SSLSocketFactory sslSocketFactory = getFactorySimple();
 				conn.setSSLSocketFactory(sslSocketFactory);
 
@@ -79,24 +64,24 @@ public class HTTPSClient {
 				logger.info("HTTP Content Length {}", conn.getContentLength());
 				logger.info("HTTP Content Type {}", conn.getContentType());
 				logger.info("HTTP Cipher Suite {}", conn.getCipherSuite());
-				logger.info("HTTP Headerfield {}", conn.getHeaderField(2));
+				logger.info("HTTP Headerfield {}", conn.getHeaderField(3));
 
 				
 				Certificate[] serverCertificate = conn.getServerCertificates();
 				
 				for (Certificate certificate : serverCertificate) {
-					logger.info("Certificate Type {}", certificate.getType());
+					logger.info("SSL Certificate Type {}", certificate.getType());
 					
 					if (certificate instanceof X509Certificate) {
 				        X509Certificate x509cert = (X509Certificate) certificate;
 
 				        // Get subject
 				        Principal principal = x509cert.getSubjectDN();
-				        logger.info("Certificate Subject DN {}", principal.getName());
+				        logger.info("SSL Certificate Subject DN {}", principal.getName());
 
 				        // Get issuer
 				        principal = x509cert.getIssuerDN();
-				        logger.info("Certificate IssuerDn {}", principal.getName());
+				        logger.info("SSL Certificate IssuerDn {}", principal.getName());
 				      }
 				}
 				
@@ -113,7 +98,7 @@ public class HTTPSClient {
 	}
 
 	/**
-	 *  Gets factory for TLS
+	 * Gets factory for TLS
 	 * @return
 	 * @throws Exception
 	 */
